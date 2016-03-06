@@ -2,7 +2,11 @@ package colorJump;
 
 import java.awt.Color;
 
-public class Peg {
-private Color color;
+import javax.swing.JButton;
+
+public class Peg extends JButton{
+	private Color color;
+	private boolean enabled;
+
 
 }
