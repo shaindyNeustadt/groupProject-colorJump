@@ -27,13 +27,21 @@ public class Peg extends JButton{
 		}
 	}
 
-	public int getX() {
+	public int getMyX() {
 		return x;
 	}
 
-	public int getY() {
+	public int getMyY() {
 		return y;
 	}
+public void setColor(Color color){
+	this.color = color;
+	repaint();
+}
 
+public Color getColor(){
+	return color;
+}
+	
 	
 }

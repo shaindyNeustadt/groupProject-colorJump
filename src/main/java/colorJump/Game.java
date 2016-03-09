@@ -58,10 +58,14 @@ public class Game {
 		}
 	}
 	
-	private int getScore(){
+	public int getScore(){
 			return score;
 	}
 	
+	public int[] getOpenSpots(int x, int y){
+		int[] spots = new int[4];
+		return spots;
+	}
 	
 	public boolean isEnabled(int x, int y) {
 		/*
@@ -77,7 +81,7 @@ public class Game {
 		int currY = y;
 
 		if (currColor == 0) {
-			return true;
+			return false;
 		}
 		// right
 		if (y + 1 < numbers[0].length
