@@ -1,5 +1,6 @@
 package colorJump;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -15,6 +16,11 @@ public class ButtonsPanel extends JPanel{
 
 	public ButtonsPanel(){
 		setLayout(new GridLayout(4,0));
+		Dimension d = new Dimension(200, 650);
+		this.setPreferredSize(d);
+		this.setMaximumSize(d);
+		this.setMinimumSize(d);
+
 		restart = new JButton("Restart");
 		help = new JButton("Help");
 		score = new JLabel("SCORE:");

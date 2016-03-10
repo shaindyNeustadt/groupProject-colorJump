@@ -1,11 +1,7 @@
 package colorJump;
 
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Random;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 /*
@@ -30,53 +26,155 @@ import javax.swing.JPanel;
  * */
 
 public class Board extends JPanel {
-	private Peg[][] pegs;
-	private Color[] colorArray;
-	private Game game;
-	private Peg fromPeg;
-	private Peg toPeg; 
+
+	private int[][] numbers;
+	private Random random;
 
 	public Board() {
-		setLayout(new GridLayout(7, 7, 5, 5));
-	colorArray = new Color[]{ null, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.PINK};
-	game = new Game();
-	
-	/*ActionListener listener = new ActionListener() {
-		public void actionPerformed(ActionEvent event) {
-			if(fromPeg == null){
-				fromPeg = (Peg) event.getSource();
-				fromPeg.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-			}
-			else{
-				toPeg = (Peg) event.getSource();
-				game.move(fromPeg.getX(), fromPeg.getY(), toPeg.getX(), toPeg.getY());
-				System.out.println("MOVE FROM " + fromPeg.getX() + " " + fromPeg.getY());
-				toPeg = fromPeg = null;
-			}
-			
-			//lastPressed.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-			//lastPressed = button;
-		}
-	};
-		*/
-		pegs = new Peg[7][7];
-		for (int i = 0; i < pegs.length; i++) {
-			for (int j = 0; j < pegs[0].length; j++) {
-				Peg peg = pegs[i][j] = new Peg(colorArray[game.getValue(i, j)], i, j);
-				add(peg);
-			//	peg.addActionListener(listener);
+		numbers = new int[7][7];
+		random = new Random();
+
+		for (int i = 0; i < numbers.length; i++) {
+			for (int j = 0; j < numbers[0].length; j++) {
+				// 6 different colors and 0 = null
+				int r;
+				do{
+					r = random.nextInt(7);
+				}
+				while(r == 0);
+				numbers[i][j] = r;
 			}
 		}
-		//setDisabled();
+
+		numbers[3][3] = 0;
+
 	}
-	
-	
-	public void setDisabled(){
-		for (int i = 0; i < pegs.length; i++) {
-			for (int j = 0; j < pegs[0].length; j++) {
-		pegs[i][j].setEnabled(game.isEnabled(i, j));
+
+	public int getValue(int x, int y) {
+		return numbers[x][y];
+	}
+
+	public boolean isEnabled(int x, int y) {
+		/*
+		 * check all 4 directions: if peg next to it exist and not same color
+		 * then check if one next to that put on stack if exists and same color
+		 * as previous then go to next and repeat else if doesn't exist then
+		 * possible move else check next direction else if no possible moves in
+		 * either direction then disable button
+		 */
+		int currColor = numbers[x][y];
+		int jumpOverColor;
+		int currX = x;
+		int currY = y;
+
+		if (currColor == 0) {
+			return true;
+		}
+		// right
+		if (y + 1 < numbers[0].length
+				&& currColor != (jumpOverColor = numbers[x][y + 1])
+				&& jumpOverColor != 0) {
+			while (y + 1 < numbers[0].length
+					&& (jumpOverColor == numbers[x][y + 1] || numbers[x][y + 1] == 0)) {
+				y++;
+				if (numbers[x][y] == 0) {
+					System.out.println("Right enable " + currX + " : " + currY
+							+ " Because of " + x + " : " + y);
+					return true;
+				}
 			}
 		}
+		// left
+		y = currY;
+		x = currX;
+		if (y > 0 && currColor != (jumpOverColor = numbers[x][y - 1])
+				&& jumpOverColor != 0) {
+			while (y > 0
+					&& (jumpOverColor == numbers[x][y - 1] || numbers[x][y - 1] == 0)) {
+				y--;
+				if (numbers[x][y] == 0) {
+					System.out.println("Left enable " + currX + " : " + currY
+							+ " Because of " + x + " : " + y);
+					return true;
+				}
+			}
+		}
+		// up
+		y = currY;
+		x = currX;
+		if (x > 0 && currColor != (jumpOverColor = numbers[x - 1][y])
+				&& jumpOverColor != 0) {
+			while (x > 0
+					&& (jumpOverColor == numbers[x - 1][y] || numbers[x - 1][y] == 0)) {
+				x--;
+				if (numbers[x][y] == 0) {
+					System.out.println("Up enable " + currX + " : " + currY
+							+ " Because of " + x + " : " + y);
+					return true;
+				}
+			}
+		}
+		// down
+		y = currY;
+		x = currX;
+		if (x + 1 < numbers.length
+				&& currColor != (jumpOverColor = numbers[x + 1][y])
+				&& jumpOverColor != 0) {
+			while (x + 1 < numbers.length
+					&& (jumpOverColor == numbers[x + 1][y] || numbers[x + 1][y] == 0)) {
+				x++;
+				if (numbers[x][y] == 0) {
+					System.out.println("Down enable " + currX + " : " + currY
+							+ " Because of " + x + " : " + y);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
+
+	public int move(int fromX, int fromY, int toX, int toY){
+		numbers[toX][toY] = numbers[fromX][fromY];
+		numbers[fromX][fromY] = 0;
+
+		int dif, score = 0;
+
+		if(toX == fromX){
+			dif = Math.abs(fromY - toY);
+		}
+		else{
+			dif = Math.abs(fromX - toX);
+		}
+
+		switch(dif){
+		case 1:
+			score = 10;
+			break;
+		case 2:
+			score = 40;
+			break;
+		case 3:
+			score = 130;
+			break;
+		case 4:
+			score = 400;
+			break;
+		case 5:
+			score = 700;
+			break;
+		}
+
+		return score;
+
+	}
+
+
+
+
+	public int[][] getBoard(){
+		return numbers;
+	}
+
+
 
 }
