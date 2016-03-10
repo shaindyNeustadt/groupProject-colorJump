@@ -33,16 +33,19 @@ public class Board extends JPanel {
 	public Board() {
 		numbers = new int[7][7];
 		random = new Random();
-
-		for (int i = 0; i < numbers.length; i++) {
-			for (int j = 0; j < numbers[0].length; j++) {
-				// 6 different colors and 0 = null
-				numbers[i][j] = random.nextInt(7);
+		newGame();
 			}
+	
+	public void newGame(){
+	for (int i = 0; i < numbers.length; i++) {
+		for (int j = 0; j < numbers[0].length; j++) {
+			// 6 different colors and 0 = null
+			numbers[i][j] = random.nextInt(6) + 1;
 		}
-		numbers[3][3] = 0;
 	}
-
+	numbers[3][3] = 0;
+}
+	
 	public int getValue(int x, int y) {
 		return numbers[x][y];
 	}
@@ -61,7 +64,7 @@ public class Board extends JPanel {
 			dif = Math.abs(fromX - toX);
 		}
 
-		switch(dif){
+		switch(dif -1){
 		case 1:
 			score = 10;
 			break;

@@ -19,11 +19,14 @@ public class GamePanel extends JPanel implements ActionListener {
 	public GamePanel(GameFrame gameFrame) {
 		setLayout(new GridLayout(7, 7, 5, 5));
 		this.gameFrame = gameFrame;
-		colorArray = new Color[] { null, Color.RED, Color.ORANGE, Color.YELLOW,
-				Color.GREEN, Color.BLUE, Color.PINK };
+		colorArray = new Color[] { null, Color.RED, Color.YELLOW,
+				Color.GREEN, Color.BLUE, 
+				new Color(255, 0, 127),
+				new Color(255, 128, 0) };
 		board = new Board();
 		pegs = new Peg[7][7];
-
+//orange 255, 128, 0     
+//purple new Color,(127, 0, 255) 
 		for (int i = 0; i < pegs.length; i++) {
 			for (int j = 0; j < pegs[0].length; j++) {
 				Peg peg = pegs[i][j] = new Peg(
@@ -43,7 +46,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 	}
 
-	@Override
+	
 	public void actionPerformed(ActionEvent event) {
 		if (fromPeg == null) {
 			fromPeg = (Peg) event.getSource();
@@ -58,7 +61,6 @@ public class GamePanel extends JPanel implements ActionListener {
 			removeSpots(fromPeg.getXLocation(), fromPeg.getYLocation(),
 					toPeg.getXLocation(), toPeg.getYLocation());
 			setScore(points);
-			System.out.println("SCORE: " + score);
 			fromPeg = null;
 			setDisabled();
 		}
@@ -86,9 +88,11 @@ public class GamePanel extends JPanel implements ActionListener {
 	public void setScore(int points) {
 		this.score += points;
 		gameFrame.getButtonsPanel().setScore(score);
-
 	}
 
+	public void resetScore(){
+		score = 0;
+	}
 	public boolean isEnabled(int x, int y) {
 		/*
 		 * check all 4 directions: if peg next to it exist and not same color
@@ -231,5 +235,16 @@ public class GamePanel extends JPanel implements ActionListener {
 				}
 			}
 		}
+	}
+	
+	public void restart(){
+		board.newGame();
+		for (int i = 0; i < pegs.length; i++) {
+			for (int j = 0; j < pegs[0].length; j++) {
+				pegs[i][j].setColor(colorArray[board.getValue(i, j)]);
+			//	peg.addActionListener(this);
+			}
+		}
+		setDisabled();
 	}
 }

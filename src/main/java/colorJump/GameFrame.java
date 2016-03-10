@@ -15,7 +15,7 @@ public class GameFrame extends JFrame{
 		setSize(850, 650);
 		setLayout(new BorderLayout());
 		gamePanel = new GamePanel(this);
-		buttonsPanel = new ButtonsPanel();
+		buttonsPanel = new ButtonsPanel(gamePanel);
 
 		Container container = getContentPane();
 		container.add(gamePanel, BorderLayout.CENTER);
