@@ -32,4 +32,8 @@ public class ButtonsPanel extends JPanel{
 		add(help);
 
 	}
+
+	public void setScore(int s){
+		scoreNum.setText(String.valueOf(s));
+	}
 }

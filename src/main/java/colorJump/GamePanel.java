@@ -14,10 +14,11 @@ public class GamePanel extends JPanel implements ActionListener {
 	private Peg fromPeg;
 	private Peg toPeg;
 	private int score;
+	private GameFrame gameFrame;
 
-	public GamePanel() {
+	public GamePanel(GameFrame gameFrame) {
 		setLayout(new GridLayout(7, 7, 5, 5));
-
+		this.gameFrame = gameFrame;
 		colorArray = new Color[] { null, Color.RED, Color.ORANGE, Color.YELLOW,
 				Color.GREEN, Color.BLUE, Color.PINK };
 		board = new Board();
@@ -42,6 +43,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (fromPeg == null) {
 			fromPeg = (Peg) event.getSource();
@@ -60,14 +62,31 @@ public class GamePanel extends JPanel implements ActionListener {
 			fromPeg = null;
 			setDisabled();
 		}
+
+		gameOver();
+	}
+
+	private void gameOver() {
+		boolean moreMoves = false;
+		for (int i = 0; i < pegs.length; i++) {
+			for (int j = 0; j < pegs[0].length; j++) {
+				if(pegs[i][j].isEnabled()){
+					moreMoves = true;
+					break;
+				}
+			}
+		}
+
+		if(!moreMoves){
+			GameOver gameOver = new GameOver();
+		}
+
 	}
 
 	public void setScore(int points) {
 		this.score += points;
-	}
+		gameFrame.getButtonsPanel().setScore(score);
 
-	private int getScore() {
-		return score;
 	}
 
 	public boolean isEnabled(int x, int y) {

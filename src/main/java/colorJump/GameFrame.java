@@ -14,7 +14,7 @@ public class GameFrame extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(850, 650);
 		setLayout(new BorderLayout());
-		gamePanel = new GamePanel();
+		gamePanel = new GamePanel(this);
 		buttonsPanel = new ButtonsPanel();
 
 		Container container = getContentPane();
@@ -24,6 +24,10 @@ public class GameFrame extends JFrame{
 
 	public GamePanel getGame(){
 		return gamePanel;
+	}
+
+	public ButtonsPanel getButtonsPanel(){
+		return buttonsPanel;
 	}
 
 
