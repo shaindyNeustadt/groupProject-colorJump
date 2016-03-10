@@ -7,7 +7,6 @@ import javax.swing.JButton;
 
 public class Peg extends JButton{
 	private Color color;
-	//private boolean enabled;
 	private int x;
 	private int y;
 
@@ -35,5 +34,13 @@ public class Peg extends JButton{
 		return y;
 	}
 
+	public Color getColor(){
+		return color;
+	}
+	
+	public void setColor(Color color){
+		this.color = color;
+		repaint();
+	}
 
 }
