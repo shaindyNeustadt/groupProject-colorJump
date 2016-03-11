@@ -25,8 +25,8 @@ public class GamePanel extends JPanel implements ActionListener {
 				new Color(255, 128, 0) };
 		board = new Board();
 		pegs = new Peg[7][7];
-//orange 255, 128, 0     
-//purple new Color,(127, 0, 255) 
+		//orange 255, 128, 0     
+		//purple new Color,(127, 0, 255) 
 		for (int i = 0; i < pegs.length; i++) {
 			for (int j = 0; j < pegs[0].length; j++) {
 				Peg peg = pegs[i][j] = new Peg(
@@ -46,7 +46,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 	}
 
-	
+
 	public void actionPerformed(ActionEvent event) {
 		if (fromPeg == null) {
 			fromPeg = (Peg) event.getSource();
@@ -236,13 +236,13 @@ public class GamePanel extends JPanel implements ActionListener {
 			}
 		}
 	}
-	
+
 	public void restart(){
 		board.newGame();
 		for (int i = 0; i < pegs.length; i++) {
 			for (int j = 0; j < pegs[0].length; j++) {
 				pegs[i][j].setColor(colorArray[board.getValue(i, j)]);
-			//	peg.addActionListener(this);
+				//	peg.addActionListener(this);
 			}
 		}
 		setDisabled();

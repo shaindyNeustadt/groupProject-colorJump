@@ -10,7 +10,7 @@ public class GameFrame extends JFrame{
 	private GamePanel gamePanel;
 
 	public GameFrame(){
-		setTitle("COLOR JUMP");
+		setTitle("PEG");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(850, 650);
 		setLayout(new BorderLayout());

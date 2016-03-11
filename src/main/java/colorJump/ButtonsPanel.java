@@ -1,11 +1,13 @@
 package colorJump;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,7 +19,8 @@ public class ButtonsPanel extends JPanel {
 	private JButton help;
 	private JLabel score;
 	private JLabel scoreNum;
-	private GamePanel gamePanel;
+	private JPanel scorePanel;
+	private JLabel logo;
 
 	public ButtonsPanel(final GamePanel gamePanel) {
 		setLayout(new GridLayout(4, 0));
@@ -26,20 +29,32 @@ public class ButtonsPanel extends JPanel {
 		this.setMaximumSize(d);
 		this.setMinimumSize(d);
 
-		this.gamePanel = gamePanel;
-		Font customFont = new Font("Serif", Font.BOLD, 50);
+		Font customFont = new Font("Bebas", Font.PLAIN, 30);
+
+		logo = new JLabel(new ImageIcon(getClass().getResource("/Peg2.png")));
 
 		restart = new JButton("Restart");
 		restart.setFont(customFont);
 		help = new JButton("Help");
 		help.setFont(customFont);
-		score = new JLabel("SCORE:", SwingConstants.CENTER);
-		score.setFont(customFont);
-		scoreNum = new JLabel("0", SwingConstants.CENTER);
-		scoreNum.setFont(customFont);
 
-		add(score);
-		add(scoreNum);
+		scorePanel = new JPanel(new BorderLayout());
+
+		scoreNum = new JLabel("0");
+		scoreNum.setFont(customFont);
+		scoreNum.setPreferredSize(new Dimension(75, 50));
+
+		score = new JLabel("SCORE: ", SwingConstants.RIGHT);
+
+		score.setFont(customFont);
+
+
+
+		scorePanel.add(score, BorderLayout.CENTER);
+		scorePanel.add(scoreNum, BorderLayout.EAST);
+
+		add(logo);
+		add(scorePanel);
 		add(restart);
 		add(help);
 
@@ -54,13 +69,13 @@ public class ButtonsPanel extends JPanel {
 		help.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane
-						.showMessageDialog(
-								null,
-								"Jump over balls of another color to empty the grid.\n"
-										+ "Score additional points per ball jumped over.\n"
-										+ "You may jump over one or more balls of the same color,\n with a ball of another color.\n"
-										+ "Bonus: if you remove all balls but one, score is doubled!         \n"
-										+ "Right click to clear selection.");
+				.showMessageDialog(
+						null,
+						"Jump over balls of another color to empty the grid.\n"
+								+ "Score additional points per ball jumped over.\n"
+								+ "You may jump over one or more balls of the same color,\n with a ball of another color.\n"
+								+ "Bonus: if you remove all balls but one, score is doubled!         \n"
+								+ "Right click to clear selection.");
 			}
 		});
 	}
