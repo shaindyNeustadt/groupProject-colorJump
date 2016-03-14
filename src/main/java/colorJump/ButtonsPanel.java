@@ -3,9 +3,11 @@ package colorJump;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
+import org.omg.CORBA.portable.InputStream;
 
 public class ButtonsPanel extends JPanel {
 	private JButton restart;
@@ -29,26 +33,35 @@ public class ButtonsPanel extends JPanel {
 		this.setMaximumSize(d);
 		this.setMinimumSize(d);
 
-		Font customFont = new Font("Bebas", Font.PLAIN, 30);
+		Font customfont = null;
+		InputStream in = (InputStream) getClass().getResourceAsStream(
+				"./BEBAS_.TTF");
+		try {
+			customfont = Font.createFont(Font.TRUETYPE_FONT, in);
+		} catch (FontFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		logo = new JLabel(new ImageIcon(getClass().getResource("/Peg2.png")));
 
 		restart = new JButton("Restart");
-		restart.setFont(customFont);
+		restart.setFont(customfont);
 		help = new JButton("Help");
-		help.setFont(customFont);
+		help.setFont(customfont);
 
 		scorePanel = new JPanel(new BorderLayout());
 
 		scoreNum = new JLabel("0");
-		scoreNum.setFont(customFont);
+		scoreNum.setFont(customfont);
 		scoreNum.setPreferredSize(new Dimension(75, 50));
 
 		score = new JLabel("SCORE: ", SwingConstants.RIGHT);
 
-		score.setFont(customFont);
-
-
+		score.setFont(customfont);
 
 		scorePanel.add(score, BorderLayout.CENTER);
 		scorePanel.add(scoreNum, BorderLayout.EAST);

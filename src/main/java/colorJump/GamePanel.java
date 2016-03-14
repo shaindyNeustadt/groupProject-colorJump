@@ -1,6 +1,7 @@
 package colorJump;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		setLayout(new GridLayout(7, 7, 5, 5));
 		this.gameFrame = gameFrame;
 		colorArray = new Color[] { null, Color.RED, Color.YELLOW, Color.GREEN,
-				Color.BLUE, new Color(255, 0, 127), new Color(255, 128, 0) };
+				Color.BLUE, Color.PINK, Color.MAGENTA };
 		board = new Board();
 		pegs = new Peg[7][7];
 		for (int i = 0; i < pegs.length; i++) {
@@ -67,17 +68,22 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 	}
 
 	private void gameOver() {
+		int count = 0;
 		boolean moreMoves = false;
 		for (int i = 0; i < pegs.length; i++) {
 			for (int j = 0; j < pegs[0].length; j++) {
-				if (pegs[i][j].isEnabled()) {
+
+				Peg peg = pegs[i][j];
+				if (peg.isEnabled()) {
 					moreMoves = true;
 					break;
+				}else if(peg.getColor() != null){
+					count++;
 				}
 			}
 		}
 
-		if (!moreMoves) {
+		if (count == 1 || !moreMoves) {
 			GameOver gameOver = new GameOver();
 		}
 
@@ -128,6 +134,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 				if (pegs[x][y].getColor() == null) {
 					if (openSpot) {
 						pegs[x][y].setEnabled(true);
+						pegs[x][y].setCursor(new Cursor(Cursor.HAND_CURSOR));
+
 					}
 					return true;
 				}
@@ -148,6 +156,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 				if (pegs[x][y].getColor() == null) {
 					if (openSpot) {
 						pegs[x][y].setEnabled(true);
+						pegs[x][y].setCursor(new Cursor(Cursor.HAND_CURSOR));
 					}
 					return true;
 				}
@@ -168,6 +177,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 				if (pegs[x][y].getColor() == null) {
 					if (openSpot) {
 						pegs[x][y].setEnabled(true);
+						pegs[x][y].setCursor(new Cursor(Cursor.HAND_CURSOR));
 					}
 					return true;
 				}
@@ -189,6 +199,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 				if (pegs[x][y].getColor() == null) {
 					if (openSpot) {
 						pegs[x][y].setEnabled(true);
+						pegs[x][y].setCursor(new Cursor(Cursor.HAND_CURSOR));
 					}
 					return true;
 				}
@@ -201,6 +212,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		for (int i = 0; i < pegs.length; i++) {
 			for (int j = 0; j < pegs[0].length; j++) {
 				pegs[i][j].setEnabled(false);
+				pegs[i][j].setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 		}
 	}
@@ -246,7 +258,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		setDisabled();
 	}
 
-	public void mouseEntered(MouseEvent arg0) {
+	public void mouseEntered(MouseEvent e) {
+		Peg peg = (Peg) e.getSource();
+		if(isEnabled(peg.getXLocation(), peg.getYLocation())){
+			peg.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		}
 	}
 
 	public void mouseExited(MouseEvent arg0) {
@@ -264,4 +280,6 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 			setDisabled();
 		}
 	}
+
+
 }
