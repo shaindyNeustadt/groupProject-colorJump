@@ -1,16 +1,20 @@
 package colorJump;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -18,7 +22,7 @@ import javax.swing.SwingConstants;
 
 import org.omg.CORBA.portable.InputStream;
 
-public class ButtonsPanel extends JPanel {
+public class ButtonsPanel extends JPanel implements MouseListener{
 	private JButton restart;
 	private JButton help;
 	private JLabel score;
@@ -28,6 +32,7 @@ public class ButtonsPanel extends JPanel {
 
 	public ButtonsPanel(final GamePanel gamePanel) {
 		setLayout(new GridLayout(4, 0));
+		setBackground(Color.WHITE);
 		Dimension d = new Dimension(200, 650);
 		this.setPreferredSize(d);
 		this.setMaximumSize(d);
@@ -50,18 +55,24 @@ public class ButtonsPanel extends JPanel {
 
 		restart = new JButton("Restart");
 		restart.setFont(customfont);
+		restart.addMouseListener(this);
+		removeDecor(restart);
 		help = new JButton("Help");
 		help.setFont(customfont);
+		help.addMouseListener(this);
+		removeDecor(help);
 
 		scorePanel = new JPanel(new BorderLayout());
+		removeDecor(scorePanel);
 
 		scoreNum = new JLabel("0");
 		scoreNum.setFont(customfont);
 		scoreNum.setPreferredSize(new Dimension(75, 50));
+		removeDecor(scoreNum);
 
 		score = new JLabel("SCORE: ", SwingConstants.RIGHT);
-
 		score.setFont(customfont);
+		removeDecor(score);
 
 		scorePanel.add(score, BorderLayout.CENTER);
 		scorePanel.add(scoreNum, BorderLayout.EAST);
@@ -95,5 +106,34 @@ public class ButtonsPanel extends JPanel {
 
 	public void setScore(int s) {
 		scoreNum.setText(String.valueOf(s));
+	}
+
+	public void removeDecor(JComponent c) {
+		c.setBackground(Color.WHITE);
+		c.setBorder(null);
+	}
+
+	public void mouseClicked(MouseEvent arg0) {
+
+	}
+
+	public void mouseEntered(MouseEvent e) {
+		JButton b = (JButton) e.getSource();
+		b.setForeground(Color.GRAY);
+
+	}
+
+	public void mouseExited(MouseEvent e) {
+		JButton b = (JButton) e.getSource();
+		b.setForeground(Color.BLACK);
+
+	}
+
+	public void mousePressed(MouseEvent arg0) {
+
+	}
+
+	public void mouseReleased(MouseEvent arg0) {
+
 	}
 }

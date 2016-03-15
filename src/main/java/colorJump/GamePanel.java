@@ -22,6 +22,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 
 	public GamePanel(GameFrame gameFrame) {
 		setLayout(new GridLayout(7, 7, 5, 5));
+		setBackground(Color.WHITE);
 		this.gameFrame = gameFrame;
 		colorArray = new Color[] { null, Color.RED, Color.YELLOW, Color.GREEN,
 				Color.BLUE, Color.PINK, Color.MAGENTA };
@@ -50,6 +51,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent event) {
 		if (fromPeg == null) {
 			fromPeg = (Peg) event.getSource();
+			fromPeg.setBackground(Color.YELLOW);
+			fromPeg.repaint();
 			disableAll();
 			setOpenSpots(fromPeg.getXLocation(), fromPeg.getYLocation());
 		} else {
