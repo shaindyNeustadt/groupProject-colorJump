@@ -6,26 +6,24 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class Peg extends JButton {
-	private Color color;
+	private int color;
 	private int x;
 	private int y;
+	private String[] colorArray = new String[] { null, "/green_peg.png",
+			"/yellow_peg.png", "/purple_peg.png", "/blue_peg.png",
+			"/pink_peg.png", "/red_peg.png" };
 
-	public Peg(Color color, int x, int y) {
+	public Peg(int color, int x, int y) {
 		this.color = color;
 		this.x = x;
 		this.y = y;
-		setImage(color);
-		// this.setBackground(null);
-		this.setContentAreaFilled(false);
+		setColor(color);
+
+		this.setBackground(Color.WHITE);
+		this.setBorder(null);
 		this.setFocusPainted(false);
 		this.setRolloverEnabled(false);
 	}
-
-	/*
-	 * @Override protected void paintComponent(Graphics g) {
-	 * super.paintComponent(g); if(color != null){ g.setColor(color);
-	 * g.fillOval((getWidth() - 70) / 2, (getHeight() - 70) / 2, 70, 70); } }
-	 */
 
 	public int getXLocation() {
 		return x;
@@ -35,31 +33,13 @@ public class Peg extends JButton {
 		return y;
 	}
 
-	public Color getColor() {
+	public int getColor() {
 		return color;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
-		setImage(color);
-	}
-
-	public void setImage(Color c) {
-		String name = null;
-		if (c == Color.BLUE) {
-			name = "/blue_peg.png";
-
-		} else if (c == Color.GREEN) {
-			name = "/green_peg.png";
-		} else if (c == Color.PINK) {
-			name = "/pink_peg.png";
-		} else if (c == Color.RED) {
-			name = "/red_peg.png";
-		} else if (c == Color.MAGENTA) {
-			name = "/purple_peg.png";
-		} else if (c == Color.YELLOW) {
-			name = "/yellow_peg.png";
-		}
+	public void setColor(int c) {
+		this.color = c;
+		String name = colorArray[c];
 
 		if (name == null) {
 			this.setIcon(null);

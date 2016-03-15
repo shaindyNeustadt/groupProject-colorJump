@@ -13,29 +13,29 @@ public class Board extends JPanel {
 		numbers = new int[7][7];
 		random = new Random();
 		newGame();
-			}
-	
-	public void newGame(){
-	for (int i = 0; i < numbers.length; i++) {
-		for (int j = 0; j < numbers[0].length; j++) {
-			// 6 different colors and 0 = null
-			numbers[i][j] = random.nextInt(6) + 1;
-		}
 	}
-	numbers[3][3] = 0;
-}
-	
+
+	public void newGame(){
+		for (int i = 0; i < numbers.length; i++) {
+			for (int j = 0; j < numbers[0].length; j++) {
+				// 6 different colors and 0 = null
+				numbers[i][j] = random.nextInt(6) + 1;
+			}
+		}
+		numbers[3][3] = 0;
+	}
+
 	public int getValue(int x, int y) {
 		return numbers[x][y];
 	}
 
-	
+
 	public int move(int fromX, int fromY, int toX, int toY){
 		numbers[toX][toY] = numbers[fromX][fromY];
 		numbers[fromX][fromY] = 0;
 
 		int dif, score = 0;
-		
+
 		if(toX == fromX){
 			dif = Math.abs(fromY - toY);
 		}

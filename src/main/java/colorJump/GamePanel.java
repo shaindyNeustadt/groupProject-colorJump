@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -24,16 +23,20 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 
 	public GamePanel(GameFrame gameFrame) {
 		setLayout(new GridLayout(7, 7, 5, 5));
-		setBackground(Color.WHITE);
+		setBackground(Color.LIGHT_GRAY);
 		this.gameFrame = gameFrame;
 		colorArray = new Color[] { null, Color.RED, Color.YELLOW, Color.GREEN,
 				Color.BLUE, Color.PINK, Color.MAGENTA };
+
 		board = new Board();
 		pegs = new Peg[7][7];
 		for (int i = 0; i < pegs.length; i++) {
 			for (int j = 0; j < pegs[0].length; j++) {
 				Peg peg = pegs[i][j] = new Peg(
-						colorArray[board.getValue(i, j)], i, j);
+						board.getValue(i, j), i, j);
+				if(i == 3 & j ==3){
+					peg.setBackground(Color.LIGHT_GRAY);
+				}
 				add(peg);
 				peg.addActionListener(this);
 				peg.addMouseListener(this);
@@ -59,6 +62,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 			setOpenSpots(fromPeg.getXLocation(), fromPeg.getYLocation());
 		} else {
 			toPeg = (Peg) event.getSource();
+
+			if(toPeg.getBackground() != Color.WHITE){
+				toPeg.setBackground(Color.WHITE);
+			}
+
 			toPeg.setColor(fromPeg.getColor());
 			int points = board.move(fromPeg.getXLocation(),
 					fromPeg.getYLocation(), toPeg.getXLocation(),
@@ -66,10 +74,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 			removeSpots(fromPeg.getXLocation(), fromPeg.getYLocation(),
 					toPeg.getXLocation(), toPeg.getYLocation());
 			setScore(points);
+			fromPeg.setBackground(Color.WHITE);
 			fromPeg = null;
 			setDisabled();
 			if(gameOver()){
-				//JOptionPane.showMessageDialog(null, "GREAT JOB!! \nScore: " + score);
 				new GameOver(this).setVisible(true);
 			}
 		}
@@ -79,19 +87,19 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		int count = 0;
 		for (int i = 0; i < pegs.length; i++) {
 			for (int j = 0; j < pegs[0].length; j++) {
-		if (pegs[i][j].isEnabled()){
-			return false;
-		}
-		if(pegs[i][j].getColor() != null){
-			count++;
-		}
+				if (pegs[i][j].isEnabled()){
+					return false;
+				}
+				if(pegs[i][j].getColor() != 0){
+					count++;
+				}
 			}
 		}
 		if(count == 1){
 			bonus = score * 2;
 		}
 		return true;
-			}
+	}
 
 	public void setScore(int points) {
 		this.score += points;
@@ -110,8 +118,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		 * possible move else check next direction else if no possible moves in
 		 * either direction then disable button
 		 */
-		Color currColor = pegs[x][y].getColor();
-		if (currColor == null) {
+		int currColor = pegs[x][y].getColor();
+		if (currColor == 0) {
 			return false;
 		}
 		return (checkRight(x, y, false) || checkLeft(x, y, false)
@@ -126,16 +134,16 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 	}
 
 	private boolean checkRight(int x, int y, boolean openSpot) {
-		Color currColor = pegs[x][y].getColor();
-		Color jumpOverColor;
+		int currColor = pegs[x][y].getColor();
+		int jumpOverColor;
 		if (y + 1 < pegs[0].length
 				&& currColor != (jumpOverColor = pegs[x][y + 1].getColor())
-				&& jumpOverColor != null) {
+				&& jumpOverColor != 0) {
 			while (y + 1 < pegs[0].length
 					&& (jumpOverColor == pegs[x][y + 1].getColor() || pegs[x][y + 1]
-							.getColor() == null)) {
+							.getColor() == 0)) {
 				y++;
-				if (pegs[x][y].getColor() == null) {
+				if (pegs[x][y].getColor() == 0) {
 					if (openSpot) {
 						pegs[x][y].setEnabled(true);
 						pegs[x][y].setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -149,15 +157,15 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 	}
 
 	private boolean checkLeft(int x, int y, boolean openSpot) {
-		Color currColor = pegs[x][y].getColor();
-		Color jumpOverColor;
+		int currColor = pegs[x][y].getColor();
+		int jumpOverColor;
 		if (y > 0 && currColor != (jumpOverColor = pegs[x][y - 1].getColor())
-				&& jumpOverColor != null) {
+				&& jumpOverColor != 0) {
 			while (y > 0
 					&& (jumpOverColor == pegs[x][y - 1].getColor() || pegs[x][y - 1]
-							.getColor() == null)) {
+							.getColor() == 0)) {
 				y--;
-				if (pegs[x][y].getColor() == null) {
+				if (pegs[x][y].getColor() == 0) {
 					if (openSpot) {
 						pegs[x][y].setEnabled(true);
 						pegs[x][y].setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -170,15 +178,15 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 	}
 
 	private boolean checkUp(int x, int y, boolean openSpot) {
-		Color currColor = pegs[x][y].getColor();
-		Color jumpOverColor;
+		int currColor = pegs[x][y].getColor();
+		int jumpOverColor;
 		if (x > 0 && currColor != (jumpOverColor = pegs[x - 1][y].getColor())
-				&& jumpOverColor != null) {
+				&& jumpOverColor != 0) {
 			while (x > 0
 					&& (jumpOverColor == pegs[x - 1][y].getColor() || pegs[x - 1][y]
-							.getColor() == null)) {
+							.getColor() == 0)) {
 				x--;
-				if (pegs[x][y].getColor() == null) {
+				if (pegs[x][y].getColor() == 0) {
 					if (openSpot) {
 						pegs[x][y].setEnabled(true);
 						pegs[x][y].setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -191,16 +199,16 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 	}
 
 	private boolean checkDown(int x, int y, boolean openSpot) {
-		Color currColor = pegs[x][y].getColor();
-		Color jumpOverColor;
+		int currColor = pegs[x][y].getColor();
+		int jumpOverColor;
 		if (x + 1 < pegs.length
 				&& currColor != (jumpOverColor = pegs[x + 1][y].getColor())
-				&& jumpOverColor != null) {
+				&& jumpOverColor != 0) {
 			while (x + 1 < pegs.length
 					&& (jumpOverColor == pegs[x + 1][y].getColor() || pegs[x + 1][y]
-							.getColor() == null)) {
+							.getColor() == 0)) {
 				x++;
-				if (pegs[x][y].getColor() == null) {
+				if (pegs[x][y].getColor() == 0) {
 					if (openSpot) {
 						pegs[x][y].setEnabled(true);
 						pegs[x][y].setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -227,26 +235,26 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 			// left
 			if (fromY > toY) {
 				for (int i = toY + 1; i <= fromY; i++) {
-					pegs[fromX][i].setColor(null);
+					pegs[fromX][i].setColor(0);
 				}
 			}
 			// right
 			else {
 				for (int i = fromY; i < toY; i++) {
-					pegs[fromX][i].setColor(null);
+					pegs[fromX][i].setColor(0);
 				}
 			}
 		} else {
 			// up
 			if (fromX > toX) {
 				for (int i = toX + 1; i <= fromX; i++) {
-					pegs[i][fromY].setColor(null);
+					pegs[i][fromY].setColor(0);
 				}
 			}
 			// down
 			else {
 				for (int i = fromX; i < toX; i++) {
-					pegs[i][fromY].setColor(null);
+					pegs[i][fromY].setColor(0);
 				}
 			}
 		}
@@ -256,9 +264,15 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		board.newGame();
 		for (int i = 0; i < pegs.length; i++) {
 			for (int j = 0; j < pegs[0].length; j++) {
-				pegs[i][j].setColor(colorArray[board.getValue(i, j)]);
+
+				if (i == 3 && j == 3) {
+					pegs[i][j].setBackground(Color.LIGHT_GRAY);
+				}else{
+					pegs[i][j].setColor(board.getValue(i, j));
+				}
 			}
 		}
+		resetScore();
 		bonus = 0;
 		setDisabled();		
 	}
@@ -281,6 +295,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 
 	public void mouseClicked(MouseEvent event) {
 		if (SwingUtilities.isRightMouseButton(event)) {
+			fromPeg.setBackground(Color.WHITE);
 			fromPeg = null;
 			setDisabled();
 		}
@@ -289,9 +304,13 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 	public int getScore(){
 		return score;
 	}
-	
-	
+
+
 	public int getBonus(){
 		return bonus;
+	}
+
+	public GameFrame getGameFrame(){
+		return gameFrame;
 	}
 }

@@ -15,20 +15,23 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import org.omg.CORBA.portable.InputStream;
 
-public class ButtonsPanel extends JPanel implements MouseListener{
+public class ButtonsPanel extends JPanel implements MouseListener {
 	private JButton restart;
 	private JButton help;
 	private JLabel score;
 	private JLabel scoreNum;
 	private JPanel scorePanel;
 	private JLabel logo;
+	private GamePanel gamePanel;
 
 	public ButtonsPanel(final GamePanel gamePanel) {
 		setLayout(new GridLayout(4, 0));
@@ -38,6 +41,7 @@ public class ButtonsPanel extends JPanel implements MouseListener{
 		this.setMaximumSize(d);
 		this.setMinimumSize(d);
 
+		this.gamePanel = gamePanel;
 		Font customfont = null;
 		InputStream in = (InputStream) getClass().getResourceAsStream(
 				"./BEBAS_.TTF");
@@ -92,14 +96,19 @@ public class ButtonsPanel extends JPanel implements MouseListener{
 
 		help.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane
-				.showMessageDialog(
-						null,
-						"Jump over balls of another color to empty the grid.\n"
-								+ "Score additional points per ball jumped over.\n"
-								+ "You may jump over one or more balls of the same color,\n with a ball of another color.\n"
-								+ "Bonus: if you remove all balls but one, score is doubled!         \n"
-								+ "Right click to clear selection.");
+				getHelp();
+
+				/*
+				 * JOptionPane.showMessageDialog( gamePanel.getGameFrame(),
+				 * "HOW TO PLAY:\n\u2022  Jump over balls of another color to empty the grid.\n"
+				 * + "\u2022  Score additional points per ball jumped over.\n" +
+				 * "\u2022  You may jump over one or more balls of the same color,\n"
+				 * + "     with a ball of another color.\n" +
+				 * "\u2022  Bonus: if you remove all balls but one, score is doubled!\n"
+				 * + "\u2022  Right click to clear selection.", "INSTRUCTIONS",
+				 * JOptionPane.DEFAULT_OPTION);
+				 */
+
 			}
 		});
 	}
@@ -135,5 +144,26 @@ public class ButtonsPanel extends JPanel implements MouseListener{
 
 	public void mouseReleased(MouseEvent arg0) {
 
+	}
+
+	public void getHelp(){
+		JFrame help = new JFrame();
+		help.setResizable(false);
+		help.setSize(350, 200);
+		help.setLocationRelativeTo(gamePanel.getGameFrame());
+		help.setTitle("INSTRUCTIONS");
+
+		JTextArea text = new JTextArea(
+				"HOW TO PLAY:\n\n"
+						+ "\u2022  Jump over balls of another color to empty the grid.\n"
+						+ "\u2022  Score additional points per ball jumped over.\n"
+						+ "\u2022  You may jump over one or more balls of the same color,\n"
+						+ "     with a ball of another color.\n"
+						+ "\u2022  Bonus: if you remove all balls but one, score is doubled!\n"
+						+ "\u2022  Right click to clear selection.");
+		text.setBorder(new EmptyBorder(15, 15, 0, 0));
+		text.setEditable(false);
+		help.add(text);
+		help.setVisible(true);
 	}
 }

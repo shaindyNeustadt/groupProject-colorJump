@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 public class GameFrame extends JFrame {
 	private ButtonsPanel buttonsPanel;
@@ -21,14 +20,7 @@ public class GameFrame extends JFrame {
 		Container container = getContentPane();
 		container.add(gamePanel, BorderLayout.CENTER);
 		container.add(buttonsPanel, BorderLayout.EAST);
-		JOptionPane
-		.showMessageDialog(
-				null,
-				"Jump over balls of another color to empty the grid.\n"
-						+ "Score additional points per ball jumped over.\n"
-						+ "You may jump over one or more balls of the same color,\n with a ball of another color.\n"
-						+ "Bonus: if you remove all balls but one, score is doubled!         \n"
-						+ "Right click to clear selection.");
+		new GameOver(gamePanel).setVisible(true);
 	}
 
 	public GamePanel getGame() {
@@ -39,7 +31,10 @@ public class GameFrame extends JFrame {
 		return buttonsPanel;
 	}
 
+
 	public static void main(String[] args) {
-		new GameFrame().setVisible(true);
+		GameFrame gui = new GameFrame();
+		gui.setVisible(true);
+		//gui.getButtonsPanel().getHelp();
 	}
 }
