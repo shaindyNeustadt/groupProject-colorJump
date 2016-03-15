@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -18,6 +19,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 	private Peg fromPeg;
 	private Peg toPeg;
 	private int score;
+	private int bonus;
 	private GameFrame gameFrame;
 
 	public GamePanel(GameFrame gameFrame) {
@@ -66,31 +68,30 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 			setScore(points);
 			fromPeg = null;
 			setDisabled();
-		}
-		gameOver();
-	}
-
-	private void gameOver() {
-		int count = 0;
-		boolean moreMoves = false;
-		for (int i = 0; i < pegs.length; i++) {
-			for (int j = 0; j < pegs[0].length; j++) {
-
-				Peg peg = pegs[i][j];
-				if (peg.isEnabled()) {
-					moreMoves = true;
-					break;
-				}else if(peg.getColor() != null){
-					count++;
-				}
+			if(gameOver()){
+				//JOptionPane.showMessageDialog(null, "GREAT JOB!! \nScore: " + score);
+				new GameOver(this).setVisible(true);
 			}
 		}
-
-		if (count == 1 || !moreMoves) {
-			GameOver gameOver = new GameOver();
-		}
-
 	}
+
+	private boolean gameOver() {
+		int count = 0;
+		for (int i = 0; i < pegs.length; i++) {
+			for (int j = 0; j < pegs[0].length; j++) {
+		if (pegs[i][j].isEnabled()){
+			return false;
+		}
+		if(pegs[i][j].getColor() != null){
+			count++;
+		}
+			}
+		}
+		if(count == 1){
+			bonus = score * 2;
+		}
+		return true;
+			}
 
 	public void setScore(int points) {
 		this.score += points;
@@ -258,7 +259,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 				pegs[i][j].setColor(colorArray[board.getValue(i, j)]);
 			}
 		}
-		setDisabled();
+		bonus = 0;
+		setDisabled();		
 	}
 
 	public void mouseEntered(MouseEvent e) {
@@ -284,5 +286,12 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		}
 	}
 
-
+	public int getScore(){
+		return score;
+	}
+	
+	
+	public int getBonus(){
+		return bonus;
+	}
 }
