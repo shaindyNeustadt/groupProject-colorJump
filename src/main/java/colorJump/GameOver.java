@@ -24,7 +24,7 @@ public class GameOver extends JFrame {
 	private JLabel score, bonus, total, gameOver, scoreLbl, bonusLbl, totalLbl;
 	private JButton ok;
 
-	public GameOver(final GamePanel game) {
+	public GameOver(final GamePanel game, final ButtonsPanel buttonsPanel) {
 		setTitle("");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(650, 450);
@@ -33,7 +33,6 @@ public class GameOver extends JFrame {
 
 		Container container = getContentPane();
 		container.setBackground(new Color(176, 224, 230));
-
 
 		scoreNum = game.getScore();
 		bonusNum = game.getBonus();
@@ -86,38 +85,29 @@ public class GameOver extends JFrame {
 		ok.setFocusPainted(false);
 		ok.addMouseListener(new MouseListener() {
 
-			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				game.restart();
+				buttonsPanel.setScore(0);
 				dispose();
 			}
 
-			@Override
 			public void mouseEntered(MouseEvent e) {
 				JButton b = (JButton) e.getSource();
 				b.setForeground(Color.WHITE);
 				b.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
 			}
 
-			@Override
 			public void mouseExited(MouseEvent e) {
 				JButton b = (JButton) e.getSource();
 				b.setForeground(Color.BLACK);
 				b.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-
 			}
 
-			@Override
 			public void mousePressed(MouseEvent arg0) {
-
 			}
 
-			@Override
 			public void mouseReleased(MouseEvent arg0) {
-
 			}
-
 		});
 
 		close.add(ok);

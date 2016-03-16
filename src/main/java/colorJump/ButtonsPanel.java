@@ -38,8 +38,7 @@ public class ButtonsPanel extends JPanel implements MouseListener {
 		this.setMinimumSize(d);
 
 		this.gamePanel = gamePanel;
-
-		bebasFont = null;
+		this.bebasFont = null;
 
 		try {
 			GraphicsEnvironment ge = GraphicsEnvironment
@@ -52,10 +51,8 @@ public class ButtonsPanel extends JPanel implements MouseListener {
 			ge.registerFont(bebasFont);
 
 		} catch (FontFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		logo = new JLabel(new ImageIcon(getClass().getResource("/Peg2.png")));
@@ -90,19 +87,6 @@ public class ButtonsPanel extends JPanel implements MouseListener {
 		add(scorePanel);
 		add(restart);
 		add(help);
-
-		/*
-		 * restart.addActionListener(new ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent arg0) {
-		 * gamePanel.restart(); setScore(0); gamePanel.resetScore(); } });
-		 * 
-		 * help.addActionListener(new ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent arg0) { getHelp();
-		 * 
-		 * } });
-		 */
 	}
 
 	public void setScore(int s) {
@@ -115,7 +99,6 @@ public class ButtonsPanel extends JPanel implements MouseListener {
 		c.setFont(bebasFont);
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent e) {
 		JButton b = (JButton) e.getSource();
 		if (b == restart) {
@@ -129,30 +112,22 @@ public class ButtonsPanel extends JPanel implements MouseListener {
 		b.setBorder(null);
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
 		JButton b = (JButton) e.getSource();
 		b.setForeground(Color.GRAY);
-
 	}
 
-	@Override
 	public void mouseExited(MouseEvent e) {
 		JButton b = (JButton) e.getSource();
 		b.setForeground(Color.BLACK);
-
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 		JButton b = (JButton) e.getSource();
 		b.setContentAreaFilled(false);
-
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
-
 	}
 
 	public void getHelp() {

@@ -31,9 +31,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		pegs = new Peg[7][7];
 		for (int i = 0; i < pegs.length; i++) {
 			for (int j = 0; j < pegs[0].length; j++) {
-				Peg peg = pegs[i][j] = new Peg(
-						board.getValue(i, j), i, j);
-				if(i == 3 & j ==3){
+				Peg peg = pegs[i][j] = new Peg(board.getValue(i, j), i, j);
+				if (i == 3 & j == 3) {
 					peg.setOpaque(false);
 				}
 				add(peg);
@@ -52,7 +51,6 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		}
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (fromPeg == null) {
 			fromPeg = (Peg) event.getSource();
@@ -63,7 +61,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		} else {
 			toPeg = (Peg) event.getSource();
 
-			if(toPeg.getBackground() != Color.WHITE){
+			if (toPeg.getBackground() != Color.WHITE) {
 				toPeg.setBackground(Color.WHITE);
 			}
 
@@ -77,8 +75,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 			fromPeg.deselect();
 			fromPeg = null;
 			setDisabled();
-			if(gameOver()){
-				new GameOver(this).setVisible(true);
+			if (gameOver()) {
+				new GameOver(this, gameFrame.getButtonsPanel()).setVisible(true);
 			}
 		}
 	}
@@ -87,15 +85,15 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		int count = 0;
 		for (int i = 0; i < pegs.length; i++) {
 			for (int j = 0; j < pegs[0].length; j++) {
-				if (pegs[i][j].isEnabled()){
+				if (pegs[i][j].isEnabled()) {
 					return false;
 				}
-				if(pegs[i][j].getColor() != 0){
+				if (pegs[i][j].getColor() != 0) {
 					count++;
 				}
 			}
 		}
-		if(count == 1){
+		if (count == 1) {
 			bonus = score * 2;
 		}
 		return true;
@@ -230,7 +228,6 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 	}
 
 	private void removeSpots(int fromX, int fromY, int toX, int toY) {
-		// code goes here to set the color to null in the jumped over spots
 		if (fromX == toX) {
 			// left
 			if (fromY > toY) {
@@ -268,37 +265,32 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 				if (i == 3 && j == 3) {
 					pegs[i][j].setBackground(Color.LIGHT_GRAY);
 					pegs[i][j].setColor(0);
-				}else{
+				} else {
 					pegs[i][j].setColor(board.getValue(i, j));
 				}
 			}
 		}
 		resetScore();
 		bonus = 0;
-		setDisabled();		
+		setDisabled();
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
 		Peg peg = (Peg) e.getSource();
-		if(isEnabled(peg.getXLocation(), peg.getYLocation())){
+		if (isEnabled(peg.getXLocation(), peg.getYLocation())) {
 			peg.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		}
 	}
 
-	@Override
 	public void mouseExited(MouseEvent arg0) {
 	}
 
-	@Override
 	public void mousePressed(MouseEvent arg0) {
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent arg0) {
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent event) {
 		if (SwingUtilities.isRightMouseButton(event)) {
 			fromPeg.deselect();
@@ -307,16 +299,15 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		}
 	}
 
-	public int getScore(){
+	public int getScore() {
 		return score;
 	}
 
-
-	public int getBonus(){
+	public int getBonus() {
 		return bonus;
 	}
 
-	public GameFrame getGameFrame(){
+	public GameFrame getGameFrame() {
 		return gameFrame;
 	}
 }

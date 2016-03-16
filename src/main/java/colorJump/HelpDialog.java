@@ -37,10 +37,8 @@ public class HelpDialog extends JDialog {
 					30f);
 			ge.registerFont(pristinaFont);
 		} catch (FontFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -58,7 +56,7 @@ public class HelpDialog extends JDialog {
 						+ "\u2022  Right click to clear selection.");
 		text.setBorder(new EmptyBorder(0, 15, 0, 0));
 		text.setEditable(false);
-		text.setOpaque(false);;
+		text.setOpaque(false);
 		container.add(title, BorderLayout.NORTH);
 		container.add(text, BorderLayout.CENTER);
 		setVisible(true);

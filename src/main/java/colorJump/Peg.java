@@ -44,17 +44,14 @@ public class Peg extends JButton {
 		String name = colorArray[c];
 		this.setIcon(new ImageIcon(getClass().getResource(name)));
 		this.setDisabledIcon(new ImageIcon(getClass().getResource(name)));
-
 	}
 
 	public void select() {
 		this.setBorder(new LineBorder(Color.BLACK));
-
 	}
 
 	public void deselect() {
 		this.setBorder(null);
-
 	}
 
 }

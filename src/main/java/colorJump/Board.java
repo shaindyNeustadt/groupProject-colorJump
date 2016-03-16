@@ -15,10 +15,9 @@ public class Board extends JPanel {
 		newGame();
 	}
 
-	public void newGame(){
+	public void newGame() {
 		for (int i = 0; i < numbers.length; i++) {
 			for (int j = 0; j < numbers[0].length; j++) {
-				// 6 different colors and 0 = null
 				numbers[i][j] = random.nextInt(6) + 1;
 			}
 		}
@@ -29,21 +28,19 @@ public class Board extends JPanel {
 		return numbers[x][y];
 	}
 
-
-	public int move(int fromX, int fromY, int toX, int toY){
+	public int move(int fromX, int fromY, int toX, int toY) {
 		numbers[toX][toY] = numbers[fromX][fromY];
 		numbers[fromX][fromY] = 0;
 
 		int dif, score = 0;
 
-		if(toX == fromX){
+		if (toX == fromX) {
 			dif = Math.abs(fromY - toY);
-		}
-		else{
+		} else {
 			dif = Math.abs(fromX - toX);
 		}
 
-		switch(dif -1){
+		switch (dif - 1) {
 		case 1:
 			score = 10;
 			break;
@@ -63,7 +60,7 @@ public class Board extends JPanel {
 		return score;
 	}
 
-	public int[][] getBoard(){
+	public int[][] getBoard() {
 		return numbers;
 	}
 }
