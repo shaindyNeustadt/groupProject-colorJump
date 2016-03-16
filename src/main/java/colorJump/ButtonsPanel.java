@@ -5,24 +5,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-
-import org.omg.CORBA.portable.InputStream;
 
 public class ButtonsPanel extends JPanel implements MouseListener {
 	private JButton restart;
@@ -32,21 +27,30 @@ public class ButtonsPanel extends JPanel implements MouseListener {
 	private JPanel scorePanel;
 	private JLabel logo;
 	private GamePanel gamePanel;
+	private Font bebasFont;
 
 	public ButtonsPanel(final GamePanel gamePanel) {
 		setLayout(new GridLayout(4, 0));
-		setBackground(Color.WHITE);
+		setOpaque(false);
 		Dimension d = new Dimension(200, 650);
 		this.setPreferredSize(d);
 		this.setMaximumSize(d);
 		this.setMinimumSize(d);
 
 		this.gamePanel = gamePanel;
-		Font customfont = null;
-		InputStream in = (InputStream) getClass().getResourceAsStream(
-				"./BEBAS_.TTF");
+
+		bebasFont = null;
+
 		try {
-			customfont = Font.createFont(Font.TRUETYPE_FONT, in);
+			GraphicsEnvironment ge = GraphicsEnvironment
+					.getLocalGraphicsEnvironment();
+
+			InputStream in = getClass().getResource("/BEBAS__.TTF")
+					.openStream();
+			bebasFont = Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(20f);
+
+			ge.registerFont(bebasFont);
+
 		} catch (FontFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,15 +58,16 @@ public class ButtonsPanel extends JPanel implements MouseListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		logo = new JLabel(new ImageIcon(getClass().getResource("/Peg2.png")));
 
 		restart = new JButton("Restart");
-		restart.setFont(customfont);
+		restart.setFont(bebasFont);
+		restart.setContentAreaFilled(false);
 		restart.addMouseListener(this);
 		removeDecor(restart);
 		help = new JButton("Help");
-		help.setFont(customfont);
+		help.setFont(bebasFont);
+		help.setContentAreaFilled(false);
 		help.addMouseListener(this);
 		removeDecor(help);
 
@@ -70,12 +75,12 @@ public class ButtonsPanel extends JPanel implements MouseListener {
 		removeDecor(scorePanel);
 
 		scoreNum = new JLabel("0");
-		scoreNum.setFont(customfont);
+		scoreNum.setFont(bebasFont);
 		scoreNum.setPreferredSize(new Dimension(75, 50));
 		removeDecor(scoreNum);
 
 		score = new JLabel("SCORE: ", SwingConstants.RIGHT);
-		score.setFont(customfont);
+		score.setFont(bebasFont);
 		removeDecor(score);
 
 		scorePanel.add(score, BorderLayout.CENTER);
@@ -86,31 +91,18 @@ public class ButtonsPanel extends JPanel implements MouseListener {
 		add(restart);
 		add(help);
 
-		restart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				gamePanel.restart();
-				setScore(0);
-				gamePanel.resetScore();
-			}
-		});
-
-		help.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				getHelp();
-
-				/*
-				 * JOptionPane.showMessageDialog( gamePanel.getGameFrame(),
-				 * "HOW TO PLAY:\n\u2022  Jump over balls of another color to empty the grid.\n"
-				 * + "\u2022  Score additional points per ball jumped over.\n" +
-				 * "\u2022  You may jump over one or more balls of the same color,\n"
-				 * + "     with a ball of another color.\n" +
-				 * "\u2022  Bonus: if you remove all balls but one, score is doubled!\n"
-				 * + "\u2022  Right click to clear selection.", "INSTRUCTIONS",
-				 * JOptionPane.DEFAULT_OPTION);
-				 */
-
-			}
-		});
+		/*
+		 * restart.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent arg0) {
+		 * gamePanel.restart(); setScore(0); gamePanel.resetScore(); } });
+		 * 
+		 * help.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent arg0) { getHelp();
+		 * 
+		 * } });
+		 */
 	}
 
 	public void setScore(int s) {
@@ -118,52 +110,53 @@ public class ButtonsPanel extends JPanel implements MouseListener {
 	}
 
 	public void removeDecor(JComponent c) {
-		c.setBackground(Color.WHITE);
+		c.setOpaque(false);
 		c.setBorder(null);
+		c.setFont(bebasFont);
 	}
 
-	public void mouseClicked(MouseEvent arg0) {
-
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		JButton b = (JButton) e.getSource();
+		if (b == restart) {
+			gamePanel.restart();
+			setScore(0);
+			gamePanel.resetScore();
+		} else if (b == help) {
+			getHelp();
+		}
+		b.setBorderPainted(false);
+		b.setBorder(null);
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 		JButton b = (JButton) e.getSource();
 		b.setForeground(Color.GRAY);
 
 	}
 
+	@Override
 	public void mouseExited(MouseEvent e) {
 		JButton b = (JButton) e.getSource();
 		b.setForeground(Color.BLACK);
 
 	}
 
-	public void mousePressed(MouseEvent arg0) {
+	@Override
+	public void mousePressed(MouseEvent e) {
+		JButton b = (JButton) e.getSource();
+		b.setContentAreaFilled(false);
 
 	}
 
-	public void mouseReleased(MouseEvent arg0) {
+	@Override
+	public void mouseReleased(MouseEvent e) {
 
 	}
 
-	public void getHelp(){
-		JFrame help = new JFrame();
-		help.setResizable(false);
-		help.setSize(350, 200);
+	public void getHelp() {
+		HelpDialog help = new HelpDialog();
 		help.setLocationRelativeTo(gamePanel.getGameFrame());
-		help.setTitle("INSTRUCTIONS");
-
-		JTextArea text = new JTextArea(
-				"HOW TO PLAY:\n\n"
-						+ "\u2022  Jump over balls of another color to empty the grid.\n"
-						+ "\u2022  Score additional points per ball jumped over.\n"
-						+ "\u2022  You may jump over one or more balls of the same color,\n"
-						+ "     with a ball of another color.\n"
-						+ "\u2022  Bonus: if you remove all balls but one, score is doubled!\n"
-						+ "\u2022  Right click to clear selection.");
-		text.setBorder(new EmptyBorder(15, 15, 0, 0));
-		text.setEditable(false);
-		help.add(text);
-		help.setVisible(true);
 	}
 }

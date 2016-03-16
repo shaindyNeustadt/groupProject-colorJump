@@ -10,9 +10,9 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.LineBorder;
 
 public class GamePanel extends JPanel implements ActionListener, MouseListener {
-	private Color[] colorArray;
 	private Board board;
 	private Peg[][] pegs;
 	private Peg fromPeg;
@@ -23,10 +23,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 
 	public GamePanel(GameFrame gameFrame) {
 		setLayout(new GridLayout(7, 7, 5, 5));
-		setBackground(Color.LIGHT_GRAY);
+		setOpaque(false);
+		setBorder(new LineBorder(Color.BLACK));
 		this.gameFrame = gameFrame;
-		colorArray = new Color[] { null, Color.RED, Color.YELLOW, Color.GREEN,
-				Color.BLUE, Color.PINK, Color.MAGENTA };
 
 		board = new Board();
 		pegs = new Peg[7][7];
@@ -35,7 +34,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 				Peg peg = pegs[i][j] = new Peg(
 						board.getValue(i, j), i, j);
 				if(i == 3 & j ==3){
-					peg.setBackground(Color.LIGHT_GRAY);
+					peg.setOpaque(false);
 				}
 				add(peg);
 				peg.addActionListener(this);
@@ -53,10 +52,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		}
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (fromPeg == null) {
 			fromPeg = (Peg) event.getSource();
-			fromPeg.setBackground(Color.YELLOW);
+			fromPeg.select();
 			fromPeg.repaint();
 			disableAll();
 			setOpenSpots(fromPeg.getXLocation(), fromPeg.getYLocation());
@@ -74,7 +74,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 			removeSpots(fromPeg.getXLocation(), fromPeg.getYLocation(),
 					toPeg.getXLocation(), toPeg.getYLocation());
 			setScore(points);
-			fromPeg.setBackground(Color.WHITE);
+			fromPeg.deselect();
 			fromPeg = null;
 			setDisabled();
 			if(gameOver()){
@@ -267,6 +267,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 
 				if (i == 3 && j == 3) {
 					pegs[i][j].setBackground(Color.LIGHT_GRAY);
+					pegs[i][j].setColor(0);
 				}else{
 					pegs[i][j].setColor(board.getValue(i, j));
 				}
@@ -277,6 +278,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		setDisabled();		
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 		Peg peg = (Peg) e.getSource();
 		if(isEnabled(peg.getXLocation(), peg.getYLocation())){
@@ -284,18 +286,22 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 		}
 	}
 
+	@Override
 	public void mouseExited(MouseEvent arg0) {
 	}
 
+	@Override
 	public void mousePressed(MouseEvent arg0) {
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent arg0) {
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent event) {
 		if (SwingUtilities.isRightMouseButton(event)) {
-			fromPeg.setBackground(Color.WHITE);
+			fromPeg.deselect();
 			fromPeg = null;
 			setDisabled();
 		}

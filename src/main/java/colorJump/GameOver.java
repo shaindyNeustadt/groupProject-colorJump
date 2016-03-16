@@ -6,25 +6,20 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
-import org.omg.CORBA.portable.InputStream;
 
 public class GameOver extends JFrame {
-	private GamePanel game;
 	private int scoreNum, bonusNum, totalNum;
 	private JLabel score, bonus, total, gameOver, scoreLbl, bonusLbl, totalLbl;
 	private JButton ok;
@@ -34,43 +29,31 @@ public class GameOver extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(650, 450);
 		setLayout(new BorderLayout());
+		setLocationRelativeTo(game.getGameFrame());
+
 		Container container = getContentPane();
-
-		Font customfont = null, pristina;
-		InputStream in = (InputStream) getClass().getResourceAsStream(
-				"./PRISTINA.TTF");
-		try {
-			customfont = Font.createFont(Font.TRUETYPE_FONT, in);
-			pristina = customfont.deriveFont(Font.PLAIN, 24);
-		} catch (FontFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		container.setBackground(new Color(176, 224, 230));
 
 
-		this.game = game;
 		scoreNum = game.getScore();
 		bonusNum = game.getBonus();
 		totalNum = scoreNum + bonusNum;
 
 		JPanel title = new JPanel();
+		title.setOpaque(false);
 		title.setLayout(new GridBagLayout());
-		title.setBorder(new LineBorder(Color.BLACK));
-		title.setPreferredSize(new Dimension(this.getWidth(), 100));
-		gameOver = new JLabel("game over");
-		gameOver.setFont(customfont);
-		gameOver.setBorder(new LineBorder(Color.RED));
+		title.setPreferredSize(new Dimension(this.getWidth(), 150));
+		gameOver = new JLabel(new ImageIcon(getClass().getResource(
+				"/game_over.png")));
 		gameOver.setHorizontalAlignment(JLabel.CENTER);
 		gameOver.setVerticalAlignment(JLabel.CENTER);
 
 		title.add(gameOver);
 
 		JPanel scorePanel = new JPanel();
+		scorePanel.setOpaque(false);
 		scorePanel.setLayout(new GridLayout(3, 2));
-		scorePanel.setBorder(new EmptyBorder(50, 100, 50, 100));
+		scorePanel.setBorder(new EmptyBorder(25, 100, 25, 100));
 		score = new JLabel(String.valueOf(scoreNum), SwingConstants.RIGHT);
 		bonus = new JLabel(String.valueOf(bonusNum), SwingConstants.RIGHT);
 		total = new JLabel(String.valueOf(totalNum), SwingConstants.RIGHT);
@@ -93,6 +76,7 @@ public class GameOver extends JFrame {
 		scorePanel.add(total);
 
 		JPanel close = new JPanel();
+		close.setOpaque(false);
 		close.setPreferredSize(new Dimension(this.getWidth(), 75));
 		close.setBorder(new EmptyBorder(0, 200, 0, 200));
 		ok = new JButton("Close");
@@ -102,13 +86,13 @@ public class GameOver extends JFrame {
 		ok.setFocusPainted(false);
 		ok.addMouseListener(new MouseListener() {
 
+			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				game.restart();
-				// setScore(0);
-				game.resetScore();
 				dispose();
 			}
 
+			@Override
 			public void mouseEntered(MouseEvent e) {
 				JButton b = (JButton) e.getSource();
 				b.setForeground(Color.WHITE);
@@ -116,6 +100,7 @@ public class GameOver extends JFrame {
 
 			}
 
+			@Override
 			public void mouseExited(MouseEvent e) {
 				JButton b = (JButton) e.getSource();
 				b.setForeground(Color.BLACK);
@@ -123,10 +108,12 @@ public class GameOver extends JFrame {
 
 			}
 
+			@Override
 			public void mousePressed(MouseEvent arg0) {
 
 			}
 
+			@Override
 			public void mouseReleased(MouseEvent arg0) {
 
 			}

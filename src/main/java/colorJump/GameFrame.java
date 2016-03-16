@@ -1,6 +1,7 @@
 package colorJump;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 
 import javax.swing.JFrame;
@@ -14,13 +15,14 @@ public class GameFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(850, 650);
 		setLayout(new BorderLayout());
+
 		gamePanel = new GamePanel(this);
 		buttonsPanel = new ButtonsPanel(gamePanel);
 
 		Container container = getContentPane();
+		container.setBackground(new Color(176, 224, 230));
 		container.add(gamePanel, BorderLayout.CENTER);
 		container.add(buttonsPanel, BorderLayout.EAST);
-		new GameOver(gamePanel).setVisible(true);
 	}
 
 	public GamePanel getGame() {
@@ -31,10 +33,9 @@ public class GameFrame extends JFrame {
 		return buttonsPanel;
 	}
 
-
 	public static void main(String[] args) {
 		GameFrame gui = new GameFrame();
 		gui.setVisible(true);
-		//gui.getButtonsPanel().getHelp();
+		gui.getButtonsPanel().getHelp();
 	}
 }
